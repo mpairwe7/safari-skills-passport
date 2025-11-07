@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Safari Skills Passport - Blockchain-powered digital credentials for African professionals">
+    <meta name="keywords" content="credentials, blockchain, africa, verification, education">
+    <title>Safari Skills Passport - Digital Credentials for African Professionals</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦁</text></svg>">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Accessibility -->
+    <meta name="theme-color" content="#10b981">
+</head>
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <span class="brand-name">Safari Skills Passport</span>
+            </div>
+            
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="nav-menu">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#verify" class="nav-link">Verify</a>
+                <a href="#about" class="nav-link">About</a>
+                <div class="nav-auth-buttons" id="nav-auth-buttons">
+                    <button class="btn btn-outline" onclick="showLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button class="btn btn-primary" onclick="showRegisterModal()">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </button>
+                </div>
+                <div class="nav-user-info" id="nav-user-info" style="display: none;">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <span class="user-name" id="nav-user-name"></span>
+                    <button class="btn btn-outline btn-sm" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Dashboard Section (shown after login) -->
+        <section id="dashboard" class="dashboard-section" style="display: none;">
+            <div class="container">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>My Dashboard</h1>
+                        <p id="user-welcome">Welcome back!</p>
+                    </div>
+                    <button class="btn btn-secondary" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+                
+                <!-- Professional Dashboard -->
+                <div id="professional-dashboard" class="role-dashboard" style="display: none;">
+                    <div class="dashboard-grid">
+                        <!-- Quick Actions -->
+                        <div class="quick-actions">
+                            <h2>Quick Actions</h2>
+                            <div class="actions-grid">
+                                <button class="action-card" onclick="addCredential()">
+                                    <div class="action-icon">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h3>Add Credential</h3>
+                                        <p>Request a new credential from an institution</p>
+                                    </div>
+                                </button>
+                                <button class="action-card" onclick="issueCredential()">
+                                    <div class="action-icon">
+                                        <i class="fas fa-certificate"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h3>Issue Credential</h3>
+                                        <p>Issue a credential to someone else</p>
+                                    </div>
+                                </button>
+                                <button class="action-card" onclick="verifyCredential()">
+                                    <div class="action-icon">
+                                        <i class="fas fa-qrcode"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h3>Verify Credential</h3>
+                                        <p>Verify someone else's credential</p>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Stats Cards -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="total-credentials">0</div>
+                                    <div class="stat-label">Total Credentials</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="verified-credentials">0</div>
+                                    <div class="stat-label">Verified</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="view-count">0</div>
+                                    <div class="stat-label">Views</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Credentials List -->
+                        <div class="credentials-list">
+                            <div class="list-header">
+                                <h2>My Credentials</h2>
+                            </div>
+                            
+                            <div id="credentials-container">
+                                <!-- Credentials will be loaded here -->
+                                <div class="empty-state">
+                                    <i class="fas fa-inbox"></i>
+                                    <h3>No credentials yet</h3>
+                                    <p>Get started by requesting a credential from an institution</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Employer Dashboard -->
+                <div id="employer-dashboard" class="role-dashboard" style="display: none;">
+                    <div class="dashboard-grid">
+                        <!-- Quick Actions -->
+                        <div class="quick-actions">
+                            <h2>Verification Tools</h2>
+                            <div class="actions-grid">
+                                <button class="action-card" onclick="verifyCredential()">
+                                    <div class="action-icon">
+                                        <i class="fas fa-qrcode"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h3>Verify Credential</h3>
+                                        <p>Scan QR code or enter ID to verify</p>
+                                    </div>
+                                </button>
+                                <button class="action-card" onclick="searchCandidates()">
+                                    <div class="action-icon">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h3>Search Candidates</h3>
+                                        <p>Find qualified professionals</p>
+                                    </div>
+                                </button>
+                                <button class="action-card" onclick="viewVerificationHistory()">
+                                    <div class="action-icon">
+                                        <i class="fas fa-history"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h3>Verification History</h3>
+                                        <p>View your verification records</p>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Verification Stats -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="verifications-today">0</div>
+                                    <div class="stat-label">Verified Today</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="pending-verifications">0</div>
+                                    <div class="stat-label">Pending Reviews</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="total-candidates">0</div>
+                                    <div class="stat-label">Candidates Found</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Verifications -->
+                        <div class="recent-activity">
+                            <h2>Recent Verifications</h2>
+                            <div id="recent-verifications">
+                                <div class="empty-state">
+                                    <i class="fas fa-history"></i>
+                                    <h3>No recent verifications</h3>
+                                    <p>Your verification history will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Institution Dashboard -->
+                <div id="institution-dashboard" class="role-dashboard" style="display: none;">
+                    <div class="dashboard-grid">
+                        <!-- Quick Actions -->
+                        <div class="quick-actions">
+                            <h2>Credential Management</h2>
+                            <div class="actions-grid">
+                                <button class="action-card" onclick="issueCredential()">
+                                    <div class="action-icon">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h3>Issue Credential</h3>
+                                        <p>Issue a new credential to a professional</p>
+                                    </div>
+                                </button>
+                                <button class="action-card" onclick="manageCredentials()">
+                                    <div class="action-icon">
+                                        <i class="fas fa-cog"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h3>Manage Credentials</h3>
+                                        <p>View and manage issued credentials</p>
+                                    </div>
+                                </button>
+                                <button class="action-card" onclick="bulkIssueCredentials()">
+                                    <div class="action-icon">
+                                        <i class="fas fa-upload"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h3>Bulk Issue</h3>
+                                        <p>Issue multiple credentials at once</p>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Institution Stats -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="issued-credentials">0</div>
+                                    <div class="stat-label">Credentials Issued</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="total-recipients">0</div>
+                                    <div class="stat-label">Recipients</div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="verification-rate">0%</div>
+                                    <div class="stat-label">Verification Rate</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Issued Credentials -->
+                        <div class="credentials-list">
+                            <div class="list-header">
+                                <h2>Recently Issued Credentials</h2>
+                            </div>
+                            
+                            <div id="issued-credentials-container">
+                                <!-- Issued credentials will be loaded here -->
+                                <div class="empty-state">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <h3>No credentials issued yet</h3>
+                                    <p>Start issuing credentials to professionals</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hero Section -->
+        <section id="hero" class="hero" role="banner">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title animate-fade-in">
+                        Your Skills, <span class="text-gradient">Verified</span> Instantly
+                    </h1>
+                    <p class="hero-subtitle animate-fade-in-delay-1">
+                        Blockchain-powered digital credentials for African professionals. 
+                        Verify your qualifications in seconds, not weeks.
+                    </p>
+                    <div class="hero-actions animate-fade-in-delay-2">
+                        <button class="btn btn-outline btn-lg" onclick="showLoginModal()">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <button class="btn btn-primary btn-lg" onclick="showRegisterModal()">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </button>
+                        <button class="btn btn-secondary btn-lg" onclick="showSection('verify')">
+                            <i class="fas fa-qrcode"></i> Verify Credential
+                        </button>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="hero-stats animate-fade-in-delay-3">
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="200">0</div>
+                            <div class="stat-label">Million+ Professionals</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="54">0</div>
+                            <div class="stat-label">African Countries</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="10">0</div>
+                            <div class="stat-label">Second Verification</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-image animate-slide-in">
+                    <div class="credential-preview">
+                        <div class="credential-card">
+                            <div class="credential-header">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span class="verified-badge">
+                                    <i class="fas fa-check-circle"></i> Verified
+                                </span>
+                            </div>
+                            <h3>Bachelor of Science</h3>
+                            <p>Computer Science</p>
+                            <div class="credential-footer">
+                                <span>University of Lagos</span>
+                                <span class="qr-icon"><i class="fas fa-qrcode"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Why Safari Skills Passport?</h2>
+                    <p class="section-subtitle">Revolutionizing credential verification across Africa</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon blockchain">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <h3>Blockchain Secured</h3>
+                        <p>Your credentials are stored on an immutable blockchain, ensuring tamper-proof verification and trust.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon speed">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Instant Verification</h3>
+                        <p>Verify credentials in under 10 seconds with QR code scanning. No more weeks of waiting.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon cost">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <h3>Cost Effective</h3>
+                        <p>95% cheaper than traditional verification. $1 vs $50-200 per credential check.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon mobile">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Mobile First</h3>
+                        <p>Access and share your credentials from any device, anywhere in Africa.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon security">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Fraud Prevention</h3>
+                        <p>Blockchain-backed authenticity makes credential fraud virtually impossible.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon africa">
+                            <i class="fas fa-globe-africa"></i>
+                        </div>
+                        <h3>Pan-African</h3>
+                        <p>Designed for cross-border employment across all 54 African countries.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="how-it-works-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">How It Works</h2>
+                    <p class="section-subtitle">Three simple steps to verified credentials</p>
+                </div>
+                
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3>Institution Issues</h3>
+                        <p>Your university or training center issues a digital credential stored on IPFS and blockchain.</p>
+                    </div>
+                    
+                    <div class="step-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>You Receive</h3>
+                        <p>Get a unique credential ID and QR code to share with potential employers.</p>
+                    </div>
+                    
+                    <div class="step-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                        <h3>Instant Verification</h3>
+                        <p>Employers scan your QR code and verify your credentials in under 10 seconds.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Verify Section -->
+        <section id="verify" class="verify-section">
+            <div class="container">
+                <div class="verify-container">
+                    <div class="verify-header">
+                        <h2>Verify a Credential</h2>
+                        <p>Scan QR code or enter credential ID to verify authenticity</p>
+                    </div>
+                    
+                    <div class="verify-tabs">
+                        <button class="tab-btn active" data-tab="qr-scan">
+                            <i class="fas fa-qrcode"></i> Scan QR Code
+                        </button>
+                        <button class="tab-btn" data-tab="manual-entry">
+                            <i class="fas fa-keyboard"></i> Enter ID
+                        </button>
+                    </div>
+                    
+                    <div class="verify-content">
+                        <!-- QR Scanner -->
+                        <div class="tab-content active" id="qr-scan">
+                            <div class="qr-scanner-container">
+                                <div id="qr-reader" class="qr-reader"></div>
+                                <p class="scanner-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    Position the QR code within the frame to scan
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Manual Entry -->
+                        <div class="tab-content" id="manual-entry">
+                            <form class="verify-form" id="verify-form">
+                                <div class="form-group">
+                                    <label for="credential-id">Credential ID</label>
+                                    <input 
+                                        type="text" 
+                                        id="credential-id" 
+                                        class="form-input" 
+                                        placeholder="SSP-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                        aria-describedby="credential-id-help"
+                                        required
+                                    >
+                                    <small id="credential-id-help" class="form-help">
+                                        Format: SSP- followed by UUID
+                                    </small>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                    <i class="fas fa-search"></i> Verify Credential
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Verification Result -->
+                    <div id="verification-result" class="verification-result" style="display: none;">
+                        <!-- Results will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-content">
+                        <h2>About Safari Skills Passport</h2>
+                        <p class="about-text">
+                            Safari Skills Passport is revolutionizing professional credentialing across Africa. 
+                            We combine blockchain technology, decentralized storage, and modern web standards to 
+                            create a trusted, instant verification system for educational and professional credentials.
+                        </p>
+                        
+                        <div class="about-stats">
+                            <div class="about-stat">
+                                <h3>200M+</h3>
+                                <p>Target African Professionals</p>
+                            </div>
+                            <div class="about-stat">
+                                <h3>$500M</h3>
+                                <p>Market Opportunity</p>
+                            </div>
+                            <div class="about-stat">
+                                <h3>95%</h3>
+                                <p>Cost Reduction</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-image">
+                        <div class="tech-stack">
+                            <h3>Powered By</h3>
+                            <div class="tech-badges">
+                                <span class="tech-badge">Rust</span>
+                                <span class="tech-badge">Substrate</span>
+                                <span class="tech-badge">IPFS</span>
+                                <span class="tech-badge">PostgreSQL</span>
+                                <span class="tech-badge">Blockchain</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Safari Skills Passport</h3>
+                    <p>Blockchain-powered digital credentials for African professionals.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#verify">Verify</a></li>
+                        <li><a href="/api">API Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press Kit</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Safari Skills Passport. All rights reserved.</p>
+                <p>Built with ❤️ for African professionals</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Registration Modal -->
+    <div id="auth-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Welcome to Safari Skills Passport</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="auth-container">
+                    <!-- Login Form -->
+                    <div class="auth-content active" id="login-content">
+                        <h2>Welcome Back</h2>
+                        <p class="auth-subtitle">Login to access your credentials</p>
+                        
+                        <form id="login-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="login-email">Email Address</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-envelope"></i>
+                                    <input 
+                                        type="email" 
+                                        id="login-email" 
+                                        class="form-input" 
+                                        placeholder="your.email@example.com"
+                                        required
+                                        autocomplete="email"
+                                        aria-describedby="login-email-error"
+                                    >
+                                </div>
+                                <div class="form-error" id="login-email-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-lock"></i>
+                                    <input 
+                                        type="password" 
+                                        id="login-password" 
+                                        class="form-input" 
+                                        placeholder="••••••••"
+                                        required
+                                        autocomplete="current-password"
+                                        minlength="8"
+                                        aria-describedby="login-password-error"
+                                    >
+                                    <button type="button" class="password-toggle" onclick="togglePassword('login-password')" aria-label="Toggle password visibility">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="form-error" id="login-password-error"></div>
+                            </div>
+                            
+                            <div class="form-options">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="login-remember" name="remember">
+                                    <label for="login-remember">Remember me</label>
+                                </div>
+                                <a href="#" class="auth-link">Forgot password?</a>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </button>
+                        </form>
+                        
+                        <div class="auth-links">
+                            <p>Don't have an account? <a href="#" onclick="switchToRegisterFromModal()">Sign up</a></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Register Form -->
+                    <div class="auth-content" id="register-content">
+                        <h2>Create Account</h2>
+                        <p class="auth-subtitle">Join Safari Skills Passport today</p>
+                        
+                        <form id="register-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="register-name">Full Name</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-user"></i>
+                                    <input 
+                                        type="text" 
+                                        id="register-name" 
+                                        class="form-input" 
+                                        placeholder="John Doe"
+                                        required
+                                        autocomplete="name"
+                                        aria-describedby="register-name-error"
+                                    >
+                                </div>
+                                <div class="form-error" id="register-name-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="register-email">Email Address</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-envelope"></i>
+                                    <input 
+                                        type="email" 
+                                        id="register-email" 
+                                        class="form-input" 
+                                        placeholder="your.email@example.com"
+                                        required
+                                        autocomplete="email"
+                                        aria-describedby="register-email-error"
+                                    >
+                                </div>
+                                <div class="form-error" id="register-email-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="register-password">Password</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-lock"></i>
+                                    <input 
+                                        type="password" 
+                                        id="register-password" 
+                                        class="form-input" 
+                                        placeholder="••••••••"
+                                        required
+                                        autocomplete="new-password"
+                                        minlength="8"
+                                        aria-describedby="register-password-error"
+                                    >
+                                    <button type="button" class="password-toggle" onclick="togglePassword('register-password')" aria-label="Toggle password visibility">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <small class="form-help">Minimum 8 characters</small>
+                                <div class="form-error" id="register-password-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="register-role">I am a</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-user-tag"></i>
+                                    <select id="register-role" class="form-input" required aria-describedby="register-role-error">
+                                        <option value="">Select your role</option>
+                                        <option value="professional">Professional</option>
+                                        <option value="institution">Institution</option>
+                                        <option value="employer">Employer</option>
+                                    </select>
+                                </div>
+                                <div class="form-error" id="register-role-error"></div>
+                            </div>
+                            
+                            <div class="form-options">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="register-terms" name="terms">
+                                    <label for="register-terms">I agree to the <a href="#" class="auth-link">Terms of Service</a> and <a href="#" class="auth-link">Privacy Policy</a></label>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                <i class="fas fa-user-plus"></i> Create Account
+                            </button>
+                        </form>
+                        
+                        <div class="auth-links">
+                            <p>Already have an account? <a href="#" onclick="switchToLoginFromModal()">Sign in</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

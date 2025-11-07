@@ -1,0 +1,21 @@
+[package]
+name = "database"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "migrate"
+path = "src/bin/migrate.rs"
+
+[dependencies]
+common = { path = "../common" }
+sqlx.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+async-trait.workspace = true
+bcrypt.workspace = true
+anyhow.workspace = true
+tokio.workspace = true
+dotenvy = "0.15"

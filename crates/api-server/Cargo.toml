@@ -1,0 +1,61 @@
+[package]
+name = "api-server"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "api-server"
+path = "src/main.rs"
+
+[dependencies]
+common = { path = "../common" }
+database = { path = "../database" }
+blockchain = { path = "../blockchain" }
+
+# Async runtime
+tokio.workspace = true
+async-trait.workspace = true
+
+# Web framework
+axum.workspace = true
+axum-extra = { version = "0.9", features = ["typed-header"] }
+tower.workspace = true
+tower-http.workspace = true
+hyper.workspace = true
+
+# Database
+sqlx.workspace = true
+
+# Serialization
+serde.workspace = true
+serde_json.workspace = true
+
+# Auth & Crypto
+jsonwebtoken.workspace = true
+bcrypt.workspace = true
+uuid.workspace = true
+
+# IPFS
+ipfs-api-backend-hyper.workspace = true
+
+# Utils
+chrono.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+dotenv.workspace = true
+qrcode.workspace = true
+image.workspace = true
+base64.workspace = true
+sha2 = "0.10"
+
+# Blockchain client
+sp-core.workspace = true
+sp-runtime.workspace = true
+subxt = "0.35"
+hex = "0.4"
+futures = "0.3"
+
+[dev-dependencies]
+reqwest = { version = "0.11", features = ["json"] }

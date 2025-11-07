@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: safari-postgres
+    environment:
+      POSTGRES_USER: safari_user
+      POSTGRES_PASSWORD: safari_pass
+      POSTGRES_DB: safari_skills_passport
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U safari_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ipfs:
+    image: ipfs/kubo:latest
+    container_name: safari-ipfs
+    ports:
+      - "4001:4001"
+      - "5001:5001"
+      - "8080:8080"
+    volumes:
+      - ipfs_data:/data/ipfs
+    environment:
+      - IPFS_PROFILE=server
+
+  api-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: safari-api
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8080
+      DATABASE_URL: postgresql://safari_user:safari_pass@postgres:5432/safari_skills_passport
+      JWT_SECRET: ${JWT_SECRET:-change-this-secret-in-production}
+      JWT_EXPIRATION_HOURS: 24
+      IPFS_URL: http://ipfs:5001
+      BLOCKCHAIN_NODE_URL: ws://127.0.0.1:9944
+      RUST_LOG: info
+      ENVIRONMENT: production
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ipfs:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  ipfs_data:

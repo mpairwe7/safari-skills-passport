@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safari Skills Passport - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .demo-container {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #1a202c;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        p {
+            color: #4a5568;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .instructions {
+            background: #f7fafc;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+            text-align: left;
+        }
+        
+        .instructions h2 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .instructions ol {
+            color: #4a5568;
+            line-height: 1.8;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        .instructions code {
+            background: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #2d3748;
+        }
+        
+        .status {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        
+        .status.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🚀 Safari Skills Passport</h1>
+        <p>Blockchain-powered digital credentials for African professionals</p>
+        
+        <div>
+            <a href="index.html" class="btn">Launch Application</a>
+            <a href="https://github.com/yourusername/safari-skills-passport" class="btn btn-secondary">View on GitHub</a>
+        </div>
+        
+        <div class="instructions">
+            <h2>📋 Quick Start</h2>
+            <ol>
+                <li>Ensure the backend API is running:
+                    <br><code>cargo run --bin api-server</code>
+                </li>
+                <li>Verify PostgreSQL is running:
+                    <br><code>podman ps</code>
+                </li>
+                <li>Click "Launch Application" above</li>
+                <li>Register a new account or login</li>
+                <li>Explore the dashboard and features</li>
+            </ol>
+        </div>
+        
+        <div class="status warning" id="api-status">
+            ⚠️ Checking API connection...
+        </div>
+    </div>
+    
+    <script>
+        // Check if API is running
+        async function checkAPI() {
+            const statusDiv = document.getElementById('api-status');
+            try {
+                const response = await fetch('http://localhost:3000/api/health');
+                if (response.ok) {
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = '✅ Backend API is running and ready!';
+                } else {
+                    throw new Error('API not responding');
+                }
+            } catch (error) {
+                statusDiv.className = 'status warning';
+                statusDiv.innerHTML = '⚠️ Backend API not detected. Please start the API server first.';
+            }
+        }
+        
+        checkAPI();
+        setInterval(checkAPI, 5000); // Check every 5 seconds
+    </script>
+</body>
+</html>
