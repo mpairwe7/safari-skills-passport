@@ -169,8 +169,8 @@ POST /api/auth/register
 Content-Type: application/json
 
 {
-  "email": "user@example.com",
-  "password": "secure_password",
+  "email": "olowophily11@gmail.com",
+  "password": "NFkr4ddaZDh7iDG",
   "name": "John Doe",
   "role": "professional" | "institution" | "employer"
 }
