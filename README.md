@@ -117,7 +117,7 @@ cd frontend
 npx serve -p 8081
 ```
 
-Then visit: `http://localhost:8080/demo.html` or `http://localhost:8080`
+Then visit: `http://localhost:8081/demo.html` or `http://localhost:8081`
 
 **Features:**
 - 🎨 Modern, responsive design
