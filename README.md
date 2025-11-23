@@ -106,15 +106,15 @@ Launch the web-based user interface:
 ```bash
 # Option 1: Using the built-in server script
 cd frontend
-./serve.sh 8080
+./serve.sh 8081
 
 # Option 2: Using Python
 cd frontend
-python3 -m http.server 8080
+python3 -m http.server 8081
 
 # Option 3: Using Node.js
 cd frontend
-npx serve -p 8080
+npx serve -p 8081
 ```
 
 Then visit: `http://localhost:8080/demo.html` or `http://localhost:8080`
