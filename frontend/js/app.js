@@ -8,7 +8,8 @@ console.log('🚀 JAVASCRIPT FILE LOADED SUCCESSFULLY!');
 console.log('Current URL:', window.location.href);
 console.log('DOM readyState:', document.readyState);
 const CONFIG = {
-    API_BASE_URL: 'http://localhost:8080/api',
+    // Use 127.0.0.1 to avoid IPv6 localhost resolution issues in some browsers
+    API_BASE_URL: 'http://127.0.0.1:8080/api',
     STORAGE_KEY: 'ssp_auth_token',
     USER_KEY: 'ssp_user_data',
     TOAST_DURATION: 5000,
